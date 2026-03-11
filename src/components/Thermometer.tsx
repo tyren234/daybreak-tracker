@@ -1,4 +1,4 @@
-import { Thermometer as ThermometerIcon, Cuboid as Cube } from 'lucide-react';
+import { Thermometer as ThermometerIcon } from 'lucide-react';
 
 interface ThermometerProps {
   cubes: number;

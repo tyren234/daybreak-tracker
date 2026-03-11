@@ -10,6 +10,7 @@ describe('carbon-logic', () => {
     ],
     globalSequestration: 5,
     thermometerCubes: 20,
+    round: 1,
   };
 
   it('calculates total gross emissions correctly', () => {
