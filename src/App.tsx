@@ -61,7 +61,7 @@ function App() {
         onChange={setGlobalSequestration} 
       />
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div className="player-grid">
         {state.players.map((player) => (
           <PlayerCounter 
             key={player.id} 
