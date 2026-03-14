@@ -4,6 +4,7 @@ import { calculateGameStats } from '../logic/carbon-logic';
 
 type GameAction =
   | { type: 'SET_GROSS_EMISSIONS'; playerId: string; amount: number }
+  | { type: 'SET_PLAYER_NAME'; playerId: string; name: string }
   | { type: 'SET_GLOBAL_SEQUESTRATION'; amount: number }
   | { type: 'ADVANCE_ROUND' }
   | { type: 'RESET_GAME' }
@@ -11,7 +12,7 @@ type GameAction =
 
 const STORAGE_KEY = 'daybreak-tracker-state';
 
-const createDefaultPlayers = (count: number): PlayerState[] => {
+export const createDefaultPlayers = (count: number): PlayerState[] => {
   return Array.from({ length: count }, (_, i) => ({
     id: (i + 1).toString(),
     name: `Player ${i + 1}`,
@@ -19,7 +20,7 @@ const createDefaultPlayers = (count: number): PlayerState[] => {
   }));
 };
 
-const initialState: GameState = {
+export const initialState: GameState = {
   players: createDefaultPlayers(4),
   globalSequestration: 0,
   thermometerCubes: 0,
@@ -32,7 +33,7 @@ const vibrate = (pattern: number | number[] = 10) => {
   }
 };
 
-const gameReducer = (state: GameState, action: GameAction): GameState => {
+export const gameReducer = (state: GameState, action: GameAction): GameState => {
   switch (action.type) {
     case 'SET_GROSS_EMISSIONS':
       vibrate();
@@ -40,6 +41,13 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         ...state,
         players: state.players.map((p) =>
           p.id === action.playerId ? { ...p, grossEmissions: Math.max(0, action.amount) } : p
+        ),
+      };
+    case 'SET_PLAYER_NAME':
+      return {
+        ...state,
+        players: state.players.map((p) =>
+          p.id === action.playerId ? { ...p, name: action.name } : p
         ),
       };
     case 'SET_GLOBAL_SEQUESTRATION':
@@ -96,6 +104,10 @@ export const useGameState = () => {
     dispatch({ type: 'SET_GROSS_EMISSIONS', playerId, amount });
   };
 
+  const setPlayerName = (playerId: string, name: string) => {
+    dispatch({ type: 'SET_PLAYER_NAME', playerId, name });
+  };
+
   const setGlobalSequestration = (amount: number) => {
     dispatch({ type: 'SET_GLOBAL_SEQUESTRATION', amount });
   };
@@ -115,6 +127,7 @@ export const useGameState = () => {
   return {
     state,
     setGrossEmissions,
+    setPlayerName,
     setGlobalSequestration,
     advanceRound,
     resetGame,

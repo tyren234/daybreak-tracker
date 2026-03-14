@@ -10,6 +10,7 @@ function App() {
     state, 
     stats, 
     setGrossEmissions, 
+    setPlayerName,
     setGlobalSequestration, 
     advanceRound, 
     resetGame,
@@ -68,6 +69,7 @@ function App() {
             name={player.name} 
             value={player.grossEmissions} 
             onChange={(val) => setGrossEmissions(player.id, val)}
+            onNameChange={(newName) => setPlayerName(player.id, newName)}
           />
         ))}
       </div>
